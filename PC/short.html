@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <title>软通信息服务</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="pintuer/pintuer.css">
+    <link rel="stylesheet" href="/editor/themes/default/default.css" />
+</head>
+<body>
+    <div style=" margin-top:5px; margin-left:13px; margin-right:13px; min-height:400px;">
+        <div class="panel" id="panel_add">
+            <div class="panel-head">常用短语管理</div>
+            <div class="panel-body">
+                <button class="button bg-main icon-plus" type="button" id="btn_show"> 添加常用短语</button>
+            </div>
+        </div>
+        <br />
+        <div class="tab">
+            <div class="tab-head">
+                <ul class="tab-nav">
+                    <li class="active" id="tab-Li-List"><a href="#tab-OrderList">短语列表</a></li>
+                </ul>
+            </div>
+            <div class="tab-body">
+                <div class="tab-panel active" id="tab-OrderList">
+                    <table class="table table-bordered table-hover" style="width:100%;" id="ListPanel"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="alert-info" class="container-layout bg-white margin" style="display: none;">
+        <input type="text" class="input" id="Title" name="Title" placeholder="短语标题" style="width:100%;margin-bottom:15px;" />
+        <textarea style="width:100%;" rows="6" id="Content" class="input" placeholder="短语内容"></textarea>
+        <div style="margin-top:10px;text-align:right;">
+            <a class="button bg-main icon-check" href="#" id="btn_addInfo"> 确定</a>&nbsp;&nbsp;&nbsp;
+            <a class="button icon-times" href="#" id="btn_info_cancel"> 取消</a>
+        </div>
+    </div>
+    <!--操作面板END-->
+    <!--页面底部-->
+    <div class="container">
+        <br /><br />
+        <br /><br />
+        <div class="text-center">版权所有 © 太原软通动力科技 All Rights Reserved</div>
+        <br /><br />
+    </div>
+    <!--页面底部END-->
+
+    <script src="pintuer/jquery.js"></script>
+    <script src="pintuer/pintuer.js"></script>
+    <script src="pintuer/respond.js"></script>
+    <script src="js/jquery.cookie.js"></script>
+    <script src="js/init.js"></script>
+    <script src="layer/layer.js"></script>
+    <script src="js/short.js"></script>
+</body>
+</html>

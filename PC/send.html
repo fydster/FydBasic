@@ -1,0 +1,199 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title>后台管理</title>
+    <link rel="stylesheet" href="pintuer/pintuer.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="editor/themes/default/default.css" />
+    <style>
+        .CList{
+            margin:0;
+            padding:0;
+            list-style:none;
+        }
+        .CList li{
+            margin:0;
+            padding:10px 0;
+            border-bottom:1px dashed #ddd;
+        }
+        .CList .Content{
+            margin-top:6px;
+        }
+        .toRight{
+            text-align:right;
+        }
+        .toLeft{
+            text-align:left;
+        }
+        .list-group i{
+            font-size:18px;
+        }
+        .list-group li{
+            cursor:pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <div class="admin">
+            <div class="line-big">
+                <div class="xm12">
+                    <div class="panel">
+                        <div class="panel-head line">
+                            <div class="xm2"><strong>发送号码</strong></div>
+                            <div class="xm2">目前已输入 <span style="color:#ff6a00;" id="span_mobileNum">0</span> 个号码</div>
+                            <div class="xm8" style="text-align:right;">
+                                
+                            </div>
+                        </div>
+                        <div style="padding:10px;">
+                            <form class="form-inline" style="margin:5px 0;">
+                                <div class="form-group" id="div_mobile">
+                                    <div class="field">
+                                        <input type="text" class="input" id="mobile" name="mobile" size="20" placeholder="输入手机号" />
+                                    </div>
+                                </div>
+                                <div class="form-button" style="margin-left:10px;">
+                                    <div class="button-group">
+                                        <button type="button" class="button icon-clipboard text-blue">
+                                            粘贴
+                                        </button>
+                                        <button type="button" class="button icon-file-o text-green">
+                                            清空
+                                        </button>
+                                        <button type="button" class="button icon-file-text-o text-yellow">
+                                            通讯录
+                                        </button>
+                                        <button id="btn_import" type="button" class="button icon-sign-in text-mix">
+                                            导入TXT文件
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                            <textarea rows="10" id="mobiles" readonly="readonly" class="input" placeholder="手机号码列表"></textarea>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="panel">
+                        <div class="panel-head line">
+                            <div class="xm2"><strong>发送内容</strong></div>
+                            <div class="xm2">目前已输入 <span style="color:#ff6a00;" id="span_contentNum">0</span> 个字</div>
+                            <div class="xm6" style="text-align:left;">
+                                <a class="button button-little border-sub icon-plus" style="display:none;" href="#" id="btn_addName"> 插入姓名</a>&nbsp;
+                                <a class="button button-little border-dot icon-plus hidden" style="display:none;" href="#" id="btn_addMemo"> 插入备注</a>
+                            </div>
+                            <div class="xm2" style="text-align:right;">
+                                <a class="button button-little border-main icon-plus hidden" href="#" id="btn_addContent"> 从常用语中选择</a>
+                            </div>
+                        </div>
+                        <textarea rows="3" id="content" class="input" placeholder="短信内容"></textarea>
+                    </div>
+                    <div style="text-align:right;margin-top:15px;margin-bottom:50px;">
+                        <a class="button bg-main icon-comment-o" href="#" id="btn_SendSms"> 发送短信</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--底部-->
+    <div class="layout fixed-bottom bg-white">
+        <div class="border-bottom padding-bottom">
+            <div class="text-center height-big text-small">
+                <strong>版权所有 © 太原软通动力 All Rights Reserved，晋ICP备17006538号 </strong>
+            </div>
+        </div>
+    </div>
+    <div id="alert-template" class="container-layout bg-white margin" style="display: none;">
+        <ul class="CList">
+            
+        </ul>
+    </div>
+
+    <ul style="display:none;" id="template">
+        <li>
+            <div class="line">
+                <div class="xm4" style="font-weight:bold;">{Title}</div>
+                <div class="xm4">
+
+                </div>
+                <div class="xm4 toRight">
+                    <a data-content="{Content}" class="button button-little border-main" href="#"> 选择</a>
+                </div>
+            </div>
+            <div class="Content">
+                {Content}
+            </div>
+        </li>
+    </ul>
+
+    <div id="alert-mobile" class="container-layout bg-white margin" style="display: none;">
+        <div style="margin-bottom:10px;">
+            请使用键盘快捷键(Ctrl+V)把号码粘贴到下面的方框里，再按确定。
+            多个号码之间请用逗号分隔
+        </div>
+        <textarea style="width:100%;" rows="10" id="ztMobiles" class="input" placeholder="号码"></textarea>
+        <div style="margin-top:10px;text-align:right;">
+            <a class="button bg-main icon-check" href="#" id="btn_addMobile"> 确定</a>&nbsp;&nbsp;&nbsp;
+            <a class="button icon-times" href="#" id="btn_mobile_cancel"> 取消</a>
+        </div>
+    </div>
+
+    <div id="alert-importTxt" class="container-layout bg-white margin" style="display: none;">
+        <div style="margin-bottom:10px;">
+            <a class="button icon-sign-in" href="#" id="btn_import"> 选择Txt文件</a>&nbsp;&nbsp;&nbsp;
+            <input type="hidden" id="importFile" />
+        </div>
+        <textarea style="width:100%;" rows="10" id="importMobiles" class="input" placeholder="号码"></textarea>
+        <div style="margin-top:10px;text-align:right;">
+            <a class="button bg-main icon-check" href="#" id="btn_addMobile_Txt"> 确定</a>&nbsp;&nbsp;&nbsp;
+            <a class="button icon-times" href="#" id="btn_mobile_cancel_Txt"> 取消</a>
+        </div>
+    </div>
+
+    <div id="alert-contact" class="container-layout bg-white margin" style="display: none;">
+        <div style="height:233px;overflow-y:auto;">
+            <ul class="list-group"></ul>
+        </div>
+        <div style="margin-top:20px;text-align:right;">
+            <a class="button bg-main icon-check" href="#" id="btn_addGroup"> 确定</a>&nbsp;&nbsp;&nbsp;
+            <a class="button icon-times" href="#" id="btn_addr_cancel"> 取消</a>
+        </div>
+    </div>
+
+    <script src="pintuer/jquery.js"></script>
+    <script src="pintuer/pintuer.js"></script>
+    <script src="pintuer/respond.js"></script>
+    <script src="js/jquery.cookie.js"></script>
+    <script src="js/init.js?v=20170725"></script>
+    <script src="js/send.js?v=20170831"></script>
+    <script src="layer/layer.js"></script>
+    <script charset="utf-8" src="editor/kindeditor.js"></script>
+    <script charset="utf-8" src="editor/lang/zh_CN.js"></script>
+    <script>
+        KindEditor.ready(function (K) {
+            var editor = K.editor({
+                uploadJson: 'editor/asp.net/upload_json.ashx',
+                fileManagerJson: 'editor/asp.net/file_manager_json.ashx',
+                allowFileManager: true
+            });
+
+            K('#btn_import').click(function () {
+                editor.loadPlugin('insertfile', function () {
+                    editor.plugin.fileDialog({
+                        fileUrl: "",
+                        clickFn: function (url, title) {
+                            editor.hideDialog();
+                            _Send.getImportTxtList(url);
+                        }
+                    });
+                });
+            });
+        });
+
+    </script>
+</body>
+</html>

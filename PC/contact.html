@@ -1,0 +1,219 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title>后台管理</title>
+    <link rel="stylesheet" href="pintuer/pintuer.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="editor/themes/default/default.css" />
+    <style>
+        th{
+            text-align:center;
+        }
+        ul{
+            height:200px;
+            overflow-y:auto;
+        }
+        .list-group li{
+            cursor:pointer;
+        }
+        .list-group .active{
+            background-color:#ddd;
+        }
+    </style>
+</head>
+<body>
+    <!--内容-->
+    <div class="layout">
+        <div class="admin">
+            <div class="line-big">
+                <div class="xm3">
+                    <div class="panel">
+                        <div class="panel-head" style="height:40px;">
+                            <span class="xm6">
+                                <strong>分组管理</strong>
+                            </span>
+                            <span class="xm6" style="text-align:right;">
+                                <a class="button button-little border-main icon-plus" href="#" id="btn_addGroup"> 添加分组</a>
+                            </span>
+                        </div>
+                        <ul class="list-group" id="ul_AddrGroup">
+
+                        </ul>
+                    </div>
+
+                    <div class="panel fadein" style="margin-top:10px;display:none;" id="div_GroupOper">
+                        <div class="panel-head">
+                            <strong>分组对应操作</strong>
+                        </div>
+                        <div class="panel-body" style="padding:5px;">
+                            <form method="post">
+                                <div class="form-group">
+                                    <div class="field">
+                                        <div class="line">
+                                            <button id="btn_addUser" style="width:100%;" type="button" class="button bg-red icon-plus">
+                                                &nbsp;添加用户
+                                            </button>
+                                        </div>
+                                        <div class="input-group" style="margin-top:10px;">
+                                            <input type="text" class="input" id="GroupName" name="GroupName" size="50" placeholder="分组名称" />
+                                            <span class="addbtn">
+                                                <button type="button" id="btn_UpdateGroup" class="button bg-main">修改</button>
+                                            </span>
+                                            <span class="addbtn">
+                                                <button type="button" id="btn_DeleteGroup" class="button bg-dot">删除</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="panel fadein" style="margin-top:10px;display:none;" id="div_Import">
+                        <div class="panel-head">
+                            <strong>通讯录导入</strong>
+                        </div>
+                        <div class="panel-body" style="padding:5px;">
+                            <form method="post">
+                                <div class="form-group">
+                                    <div class="field" style="margin-top:10px;">
+                                        <div class="input-group">
+                                            <input type="text" class="input" name="importFile" id="importFile" size="50" placeholder="excel模板" />
+                                            <span class="addbtn">
+                                                <button type="button" id="btn_import" class="button bg-blue">
+                                                    选择模板文件
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="line" style="margin-top:10px;">
+                                        <button id="btn_ToImport" style="width:100%;" type="button" class="button border-blue icon-sign-in">
+                                            &nbsp;确定导入
+                                        </button>
+                                    </div>
+                                    <div class="line" style="margin-top:10px;">
+                                        <a style="width:100%;text-align:center;" href="通讯录模板.xls" class="button border-green icon-download">
+                                            &nbsp;右键点击另存为模板
+                                        </a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="xm9">
+                    <div class="panel">
+                        <table class="table">
+                            <tbody>
+                                
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="line" id="PagePanel" style="margin-top:15px;display:none;">
+                        <div class="xm6" style="text-align:left;">
+                            <div class="button-group">
+                                <button type="button" class="button">
+                                    共<em id="allPage"></em>页
+                                </button>
+                                <button type="button" class="button">
+                                    <em id="allNum"></em>条记录
+                                </button>
+                            </div>
+                        </div>
+                        <div class="xm6" style="text-align:right;">
+                            <div class="button-group" id="Page_Info">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--底部-->
+    <div class="layout fixed-bottom bg-white">
+        <div class="border-bottom padding-bottom">
+            <div class="text-center height-big text-small">
+                <strong>版权所有 © 太原软通动力 All Rights Reserved，晋ICP备17006538号 </strong>
+            </div>
+        </div>
+    </div>
+    <div id="alert-talk" class="container-layout bg-white margin" style="display: none;">
+            <div class="form-group">
+                <div class="label">
+                    <span class="float-right">姓名</span>
+                    <label for="username">
+                        姓名
+                    </label>
+                </div>
+                <div class="field field-icon-right">
+                    <span class="icon icon-user"></span>
+                    <input type="text" class="input" id="Contact" name="Contact" size="30" placeholder="姓名" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <span class="float-right">手机号码，11位</span>
+                    <label for="password">
+                        手机号码
+                    </label>
+                </div>
+                <div class="field field-icon-right">
+                    <span class="icon icon-phone"></span>
+                    <input type="text" class="input" id="Mobile" name="Mobile" size="30" placeholder="请输入11位手机号码" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="label">
+                    <span class="float-right">给用户临时加标记</span>
+                    <label for="password">
+                        备注
+                    </label>
+                </div>
+                <div class="field field-icon-right">
+                    <span class="icon icon-list"></span>
+                    <input type="text" class="input" id="Memo" name="Memo" size="30" placeholder="请输入备注" />
+                </div>
+            </div>
+            <div class="form-button">
+                <button class="button bg-main" id="btn_addAddress">
+                    确定修改
+                </button>
+            </div>
+    </div>
+    <script charset="utf-8" src="editor/kindeditor.js"></script>
+    <script charset="utf-8" src="editor/lang/zh_CN.js"></script>
+    <script>
+        KindEditor.ready(function (K) {
+            var editor = K.editor({
+                uploadJson: 'editor/asp.net/upload_json.ashx',
+                fileManagerJson: 'editor/asp.net/file_manager_json.ashx',
+                allowFileManager: true
+            });
+            K('#btn_import').click(function () {
+                editor.loadPlugin('insertfile', function () {
+                    editor.plugin.fileDialog({
+                        fileUrl: K('#importFile').val(),
+                        clickFn: function (url, title) {
+                            K('#importFile').val(url);
+                            editor.hideDialog();
+                        }
+                    });
+                });
+            });
+        });
+
+    </script>
+    <script src="pintuer/jquery.js"></script>
+    <script src="pintuer/pintuer.js"></script>
+    <script src="pintuer/respond.js"></script>
+    <script src="js/jquery.cookie.js"></script>
+    <script src="js/init.js"></script>
+    <script src="layer/layer.js"></script>
+    <script src="js/class.js?v=20170801"></script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title>太原软通动力科技有限公司</title>
+    <link rel="Shortcut Icon" href="favicon.ico">
+    <link rel="Bookmark" href="favicon.ico">
+    <link rel="stylesheet" href="/pintuer/pintuer.css">
+    <link rel="stylesheet" href="/css/admin.css">
+    <script src="/pintuer/jquery.js"></script>
+    <script src="/js/jquery.cookie.js"></script>
+    <script src="/pintuer/pintuer.js"></script>
+    <script src="/pintuer/respond.js"></script>
+</head>
+<body style="background: url(/img/bg6.jpg) no-repeat; ">
+    <div class="container">
+        <div class="line">
+            <div class="xs6 xm4 xs3-move xm4-move">
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                    <div class="panel padding">
+                        <div class="text-center" style="display:block;height:55px;padding-top:10px;">
+                            <div style="width:30%;float:left;"><img src="/img/jcyLogo.png" style="width:60px;" /></div>
+                            <div style="width:70%;float:left;text-align:left;">
+                                <h2><strong>太原市人民检察院</strong></h2>
+                                <span style="display:block;margin-top:10px;">信息平台</span>
+                            </div>
+                        </div>
+                        <div class="" style="padding:30px;padding-bottom:10px;">
+                            <div class="form-group">
+                                <div class="field field-icon-right">
+                                    <input type="text" class="input" name="username" id="username" placeholder="登录账号" data-validate="required:请填写账号,length#>=2:账号长度不符合要求" />
+                                    <span class="icon icon-user"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="field field-icon-right">
+                                    <input type="password" class="input" name="password" id="password" placeholder="登录密码" data-validate="required:请填写密码,length#>=5:密码长度不符合要求" />
+                                    <span class="icon icon-key"></span>
+                                </div>
+                            </div>
+                            <div class="form-group hidden">
+                                <div class="field">
+                                    <input type="text" class="input" name="passcode" placeholder="填写右侧的验证码" />
+                                    <img src="images/passcode.jpg" width="80" height="32" class="passcode" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="field">
+                                    <button class="button button-block bg-blue text-big">立即登录</button>
+                                </div>
+                            </div>
+                            <div class="form-group hidden">
+                                <div class="field text-center">
+                                    <p class="text-muted text-center">
+                                        <a class="" href="login.html#"><small>忘记密码了？</small></a> | <a class="" href="register.html">注册新账号</a>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="text-right text-small text-gray padding-top">专业技术 用心服务</div>
+                            <div style="text-align:center;padding-top:15px;color:#234777;">太原软通动力科技有限公司</div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/init.js"></script>
+    <script>
+        $(function () {
+            $(".button-block").click(_Init.login);
+            var h = window.screen.height;
+            var w = window.screen.width;
+            $("body").css("background-size", w + "px " + h + "px");
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title>后台管理</title>
+    <link rel="stylesheet" href="pintuer/pintuer.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <div class="layout">
+        <div class="admin">
+            <div class="line-big">
+                <div class="xm12">
+                    <div class="panel">
+                        <div class="panel-head"><strong>查询条件</strong></div>
+                        <div class="panel-body">
+                            <form method="post" class="form-inline">
+                                <div class="form-group">
+                                    <div class="label"><label for="username">发送日期&nbsp;</label></div>
+                                    <div class="field">
+                                        <input type="text" size="20" id="DateS" style="width:100px;" class="input" placeholder="" />-
+                                        <input type="text" size="20" id="DateE" style="width:100px;" class="input" placeholder="" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="label">
+                                        <label for="username">
+                                            手机
+                                        </label>
+                                    </div>
+                                    <div class="field">
+                                        <input type="text" class="input" id="mobile" name="mobile" size="20" placeholder="手机" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="label">
+                                        <label for="password">
+                                            内容
+                                        </label>
+                                    </div>
+                                    <div class="field">
+                                        <input type="text" class="input" id="content" name="content" size="20" placeholder="内容" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="label">
+                                        <label for="password">
+                                            状态
+                                        </label>
+                                    </div>
+                                    <div class="field">
+                                        <select class="input" id="state">
+                                            <option value="0">全部</option>
+                                            <option value="1">成功</option>
+                                            <option value="-1">失败</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-button">
+                                    <button class="button bg-main" id="btn_select" type="button">
+                                        查询
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="panel">
+                        <table class="table">
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="line" id="PagePanel" style="margin-top:15px;display:none;">
+                        <div class="xm6" style="text-align:left;">
+                            <div class="button-group">
+                                <button type="button" class="button">
+                                    共<em id="allPage"></em>页
+                                </button>
+                                <button type="button" class="button">
+                                    <em id="allNum"></em>条记录
+                                </button>
+                            </div>
+                        </div>
+                        <div class="xm6" style="text-align:right;">
+                            <div class="button-group" id="Page_Info">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="alert-mx" class="container-layout bg-white margin" style="display: none;">
+        <table class="table">
+            <tbody></tbody>
+        </table>
+    </div>
+    <!--底部-->
+    <div class="layout fixed-bottom bg-white">
+        <div class="border-bottom padding-bottom">
+            <div class="text-center height-big text-small">
+                <strong>版权所有 © 太原软通动力 All Rights Reserved，晋ICP备17006538号 </strong>
+            </div>
+        </div>
+    </div>
+    <script src="pintuer/jquery.js"></script>
+    <script src="pintuer/pintuer.js"></script>
+    <script src="pintuer/respond.js"></script>
+    <script src="layer/layer.js"></script>
+    <script src="js/jquery.cookie.js"></script>
+    <script src="js/init.js"></script>
+    <!--日期控件-->
+    <link href="date/jquery.datetimepicker.css" rel="stylesheet" type="text/css" />
+    <script src="date/jquery.datetimepicker.js" type="text/javascript"></script>
+    <!--日期控件END-->
+    <script src="js/list.js?v=20170829"></script>
+</body>
+</html>
