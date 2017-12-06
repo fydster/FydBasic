@@ -50,6 +50,7 @@
     <Compile Include="Admin\_AdminLog.cs" />
     <Compile Include="Admin\_AdminRole.cs" />
     <Compile Include="Admin\_AdminUser.cs" />
+    <Compile Include="Count\_CountSendAll.cs" />
     <Compile Include="PlugIn\_ImportHisData.cs" />
     <Compile Include="Sms\_SmsChannel.cs" />
     <Compile Include="Sms\_SmsChannelSetting.cs" />

@@ -16,8 +16,9 @@ namespace Rtdl.Sms.Data
         /// <param name="isService"></param>
         /// <param name="workNo"></param>
         /// <returns></returns>
-        public List<smsMx> GetSmsMxList(string StreamNo,int State)
+        public List<smsMx> GetSmsMxList(string StreamNo,int State,out string Err)
         {
+            string msg = "";
             List<smsMx> le = null;
             string sql = "select * from tbl_sms_mx where StreamNo = '" + StreamNo + "' and State = " + State + " order by AddOn asc";
             if (State == -1)
@@ -30,12 +31,13 @@ namespace Rtdl.Sms.Data
                 {
                     if (dt != null && dt.Rows.Count > 0)
                     {
+                        msg = "OK";
                         le = new List<smsMx>();
                         foreach (DataRow r in dt.Rows)
                         {
                             smsMx e = new smsMx
                             {
-                                ID = Convert.ToInt16(r["id"]),
+                                ID = Convert.ToInt32(r["id"]),
                                 StreamNo = r["StreamNo"].ToString(),
                                 Mobile = r["Mobile"].ToString(),
                                 Content = r["Content"].ToString(),
@@ -57,11 +59,11 @@ namespace Rtdl.Sms.Data
                     }
                 }
             }
-            catch
+            catch(Exception e)
             {
-
+                msg = e.Message.ToString();
             }
-            
+            Err = msg;
             return le;
         }
 
@@ -85,7 +87,7 @@ namespace Rtdl.Sms.Data
                     {
                         smsMx e = new smsMx
                         {
-                            ID = Convert.ToInt16(r["id"]),
+                            ID = Convert.ToInt32(r["id"]),
                             StreamNo = r["StreamNo"].ToString(),
                             Mobile = r["Mobile"].ToString(),
                             ErrMsg = r["ErrMsg"].ToString(),

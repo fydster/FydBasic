@@ -3,7 +3,7 @@
     COOKIE_NAME: "_Mobile",
     BaseUrl: "http://sms.tyrtdl.cn",
     CityS: "",
-    Default_Page_Size:10,
+    Default_Page_Size: 10,
     ServerUrl: "Handler.ashx?mobile_cookie=" + $.cookie("_Mobile"),
     ImportUrl: "importHandler.ashx?mobile_cookie=" + $.cookie("_Mobile"),
     ServiceUrl: "serviceHandler.ashx?mobile_cookie=" + $.cookie("_Mobile"),

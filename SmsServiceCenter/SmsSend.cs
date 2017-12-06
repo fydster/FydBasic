@@ -38,7 +38,8 @@ namespace SmsServiceCenter
                         MchIP = "";
                         MoPort = 0;
                         StreamNo = item.StreamNo;
-                        List<smsMx> lMx = new _SmsMx().GetSmsMxList(StreamNo, 0);
+                        string outS = "";
+                        List<smsMx> lMx = new _SmsMx().GetSmsMxList(StreamNo, 0,out outS);
                         List<string> lsql = new List<string>();
                         if (Dic.ContainsKey(item.ChannelID))
                         {
@@ -51,6 +52,7 @@ namespace SmsServiceCenter
                         }
                         int Result = 1;
                         string ErrMsg = "";
+                        Program.SignLog("待发送（--" + StreamNo + "-" + outS + "-" + lMx.Count + "）条记录", true);
                         foreach (smsMx mx in lMx)
                         {
                             try
@@ -79,10 +81,10 @@ namespace SmsServiceCenter
                                     Result = 1;
                                 }
                             }
-                            catch
+                            catch(Exception e)
                             {
                                 Result = 2;
-                                ErrMsg = "";
+                                ErrMsg = e.Message.ToString();
                             }
                             allNum++;
                             helper.ExecuteSqlNoResult("update tbl_sms_mx set State = " + Result + ",SendOn = '" + DateTime.Now + "',ErrMsg = '" + ErrMsg + "' where ID = " + mx.ID);

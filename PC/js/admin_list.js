@@ -1,9 +1,10 @@
-﻿var _List = {
+﻿var userObj;
+var _List = {
     Page_Now: 1,
     init: function () {
 
         var NowDate = new Date().pattern("yyyy-MM-dd");
-        //$('#DateS').val(NowDate);
+        $('#DateS').val(NowDate);
         $('#DateE').val(NowDate);
         $('#DateS').datetimepicker({
             lang: 'ch',
@@ -20,7 +21,42 @@
         $("#btn_select").click(function () {
             _List.getList(1);
         });
-        _List.getList(1);
+        _List.initUser();
+    },
+    initUser: function () {
+        $("#adminId").html("<option value='0'>全部用户</option>");
+        $.ajax(
+				{
+				    url: _Init.ServerUrl,
+				    context: document.body,
+				    dataType: "json",
+				    cache: false,
+				    data: { fn: 103, t: new Date() },
+				    success: function (o) {
+				        if (o.Return == 0) {
+				            userObj = o.List;
+				            for (var i = 0; i < o.List.length; i++) {
+				                var oi = o.List[i];
+				                $("#adminId").append("<option value='" + oi.ID + "'>" + oi.CorpName + "</option>");
+				            }
+				            _List.getList(1);
+				        }
+				    }
+				}
+		);
+    },
+    getUserName: function (adminId) {
+        var corpName = "";
+        if (userObj != null) {
+            for (var i = 0; i < userObj.length; i++) {
+                var oi = userObj[i];
+                if (oi.ID == adminId) {
+                    corpName = oi.CorpName;
+                    break;
+                }
+            }
+        }
+        return corpName;
     },
     SumPage: function (page) {
         _List.getList(page);
@@ -31,8 +67,9 @@
         var DateE = $("#DateE").val();
         var Mobile = $("#mobile").val();
         var Content = $("#content").val();
-        var htmlHead = "<tr><th>发送号码</th><th>发送数量</th><th>发送内容</th><th>添加时间</th><th>发送状态</th><th>操作</th></tr>";
-        var template = "<tr><td width=\"200\">{1}</td><td width=\"100\">{2}</td><td>{3}</td><td width=\"110\">{4}</td><td width=\"110\">{5}</td><td width=\"140\"><button data-id=\"{id}\" data-streamno=\"{streamNo}\" class=\"button button-small border-blue\"> 查看详情</button></td></tr>";
+        var adminId = $("#adminId").val();
+        var htmlHead = "<tr><th>用户</th><th>添加时间</th><th>数量</th><th>发送号码</th><th>发送内容</th><th>发送状态</th><th>操作</th></tr>";
+        var template = "<tr><td width=\"160\">{6}</td><td width=\"110\">{4}</td><td width=\"90\">{2}</td><td width=\"170\">{1}</td><td>{3}</td><td width=\"110\">{5}</td><td width=\"140\"><button data-id=\"{id}\" data-streamno=\"{streamNo}\" class=\"button button-small border-blue\"> 查看详情</button></td></tr>";
         $(".panel").find("tbody").html("");
         _List.Page_Now = page;
         $.ajax(
@@ -41,7 +78,7 @@
 				    context: document.body,
 				    dataType: "json",
 				    cache: false,
-				    data: { fn: 101,Content:escape(Content), Mobile:Mobile, DateE:DateE, DateS: DateS, page: page, t: new Date() },
+				    data: { fn: 105, adminId:adminId,Content: escape(Content), Mobile: Mobile, DateE: DateE, DateS: DateS, page: page, t: new Date() },
 				    success: function (o) {
 				        if (o.Return == 0) {
 				            $(".panel").find("tbody").append(htmlHead);
@@ -61,7 +98,8 @@
 				                else {
 				                    tempHtml = template.replace("{1}", oi.SendName);
 				                }
-				                tempHtml = tempHtml.replace("{2}", oi.MobileNum);
+				                tempHtml = tempHtml.replace("{2}", oi.MobileNum+"个<br />"+oi.FeeNum+"条");
+				                tempHtml = tempHtml.replace("{6}", _List.getUserName(oi.AdminID));
 				                tempHtml = tempHtml.replace("{3}", oi.Content);
 				                tempHtml = tempHtml.replace("{4}", new Date(oi.AddOn).pattern("yyyy-MM-dd HH:mm:ss"));
 				                tempHtml = tempHtml.replace("{5}", oi.State.toString().replace("0", "<span class=\"tag bg-red-light\">待发送</span>").replace("1", "<span class=\"tag bg-blue-light\">发送中</span>").replace("2", "<span class=\"tag bg-green-light\">已发送</span>"));
@@ -118,14 +156,8 @@
 				                else {
 				                    tempHtml = tempHtml.replace("{3}", "---");
 				                }
-				                var msg = "发送完成";
-				                if (oi.State == 0) {
-				                    msg = "发送中";
-				                }
-				                if (oi.State < 0 || oi.State > 1) {
-				                    msg = oi.ErrMsg;
-				                }
-				                tempHtml = tempHtml.replace("{4}", msg);
+				                
+				                tempHtml = tempHtml.replace("{4}", oi.State.toString().replace("0", "<span class=\"tag bg-red-light\">发送中</span>").replace("1", "<span class=\"tag bg-blue-light\">发送完成</span>").replace("2", "<span class=\"tag bg-green-light\">发送失败</span>"));
 				                tempHtml = tempHtml.replace("{5}", "---");
 				                tempHtml = tempHtml.replace(/{id}/g, oi.ID);
 				                tempHtml = tempHtml.replace(/{errmsg}/g, oi.ErrMsg);

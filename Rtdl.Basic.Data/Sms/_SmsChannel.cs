@@ -28,7 +28,7 @@ namespace Rtdl.Sms.Data
                     {
                         smsChannel e = new smsChannel
                         {
-                            ID = Convert.ToInt16(r["id"]),
+                            ID = Convert.ToInt32(r["id"]),
                             ChannelName = r["ChannelName"].ToString(),
                             MchUName = r["MchUName"].ToString(),
                             MchUPass = r["MchUPass"].ToString(),

@@ -106,9 +106,11 @@ namespace SmsServiceCenter
                 string ErrMsg = "";
                 int test = 0;// XwSmsApi.PostMsg("sxgy@bjsxhj2", "hj@08555", "13100000138", "我院订于2017年6月10日召开全员大会【山西高院】", out ErrMsg);
                 //int test = XwSmsApi.PostMsg("bjjcb@bjjcb", "haijing08555", "13100000138", "我院订于2017年6月10日召开全员大会", out ErrMsg);
-                //SignLog("发送结果" + test, true);
-                //SignLog("发送结果文本" + ErrMsg, true);
+                test = XwSmsApi.PostMsg("bjsxztb@bjsxztb", "haijing08555", "211.147.239.62", 8460, 8450, "13100000138", "我院订于2017年6月10日召开全员大会【省评标专家库】", "", out ErrMsg);
+                SignLog("发送结果" + test, true);
+                SignLog("发送结果文本" + ErrMsg, true);
                 
+                /*
                 SzSmsApi s = new SzSmsApi
                 {
                     enterpriseID = "11343",
@@ -120,7 +122,8 @@ namespace SmsServiceCenter
                     subPort = "",
                     sendTime = ""
                 };
-                test = SzSmsApi.SendSms(s);
+                 */ 
+                //test = SzSmsApi.SendSms(s);
                 SignLog("发送结果--" + test, true);
                 SignLog("发送结果文本--" + ErrMsg, true);
                 

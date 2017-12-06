@@ -23,7 +23,8 @@ public class Handler : IHttpHandler {
         c.Response.ContentType = "text/plain";
         if (F != 0 && F != 19)
         {
-            if (LoginCheck(c))
+            admin = Comm.LoginCheck(c);
+            if (admin != null)
             {
                 string submitCheck = string.IsNullOrEmpty(c.Request["submitCheck"]) ? "" : c.Request["submitCheck"].ToString();
                 if (submitCheck.Length == 0 || submitCheck.Length > 3)
@@ -45,25 +46,6 @@ public class Handler : IHttpHandler {
         {
             c.Response.Write(GetResult(F, c));
         }
-    }
-
-    /// <summary>
-    /// 登陆验证
-    /// </summary>
-    /// <param name="c"></param>
-    /// <returns></returns>
-    public bool LoginCheck(HttpContext c)
-    {
-        string mobile = string.IsNullOrEmpty(c.Request["mobile_cookie"]) ? "" : c.Request["mobile_cookie"].ToString();
-        mobile = mobile.Replace(",", "");
-        if (c.Cache["Admin_Info" + mobile] != null)
-        {
-            admin = (adminUser)c.Cache["Admin_Info" + mobile];
-            c.Cache.Remove("Admin_Info" + mobile);
-            c.Cache.Add("Admin_Info" + mobile, admin, null, System.DateTime.UtcNow.AddMinutes(600), TimeSpan.Zero, System.Web.Caching.CacheItemPriority.Normal, null);
-            return true;
-        }
-        return false;
     }
 
    

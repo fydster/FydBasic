@@ -42,8 +42,9 @@ namespace Rtdl.Sms.Data
                                 StreamNo = r["StreamNo"].ToString(),
                                 Mobiles = r["Mobiles"].ToString(),
                                 SendName = r["SendName"].ToString(),
-                                MobileNum = Convert.ToInt16(r["MobileNum"]),
+                                MobileNum = Convert.ToInt32(r["MobileNum"]),
                                 SendType = Convert.ToInt16(r["SendType"]),
+                                FeeNum = Convert.ToInt32(r["FeeNum"]),
                                 State = Convert.ToInt16(r["State"])
                             };
                             if (l.SendType == 1)

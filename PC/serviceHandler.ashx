@@ -6,6 +6,7 @@ using Rtdl.Basic.Model;
 using Rtdl.Basic.Data;
 using Rtdl.Sms.Model;
 using Rtdl.Sms.Data;
+using Rtdl.Basic.Data.Count;
 using LitJson;
 using System.Linq;
 using System.Collections.Generic;
@@ -20,11 +21,11 @@ public class serviceHandler : IHttpHandler {
     public void ProcessRequest(HttpContext c)
     {
         int F = string.IsNullOrEmpty(c.Request["fn"]) ? 0 : Convert.ToInt16(c.Request["fn"]);
-        AddQueryLog(c);
         c.Response.ContentType = "text/plain";
         if (F != 0 && F != 19 && F != 40)
         {
-            if (LoginCheck(c))
+            admin = Comm.LoginCheck(c);
+            if (admin != null)
             {
                 string submitCheck = string.IsNullOrEmpty(c.Request["submitCheck"]) ? "" : c.Request["submitCheck"].ToString();
                 if (submitCheck.Length == 0 || submitCheck.Length > 3)
@@ -33,7 +34,6 @@ public class serviceHandler : IHttpHandler {
                 }
                 else
                 {
-                    new Main().AddTestLog("[A]Result" + F, "重复提交");
                     c.Response.Write(ToJsonResult.GetR(1, "System Exception[" + F + "]"));
                 }
             }
@@ -46,25 +46,6 @@ public class serviceHandler : IHttpHandler {
         {
             c.Response.Write(GetResult(F, c));
         }
-    }
-
-    /// <summary>
-    /// 登陆验证
-    /// </summary>
-    /// <param name="c"></param>
-    /// <returns></returns>
-    public bool LoginCheck(HttpContext c)
-    {
-        string mobile = string.IsNullOrEmpty(c.Request["mobile_cookie"]) ? "" : c.Request["mobile_cookie"].ToString();
-        mobile = mobile.Replace(",", "");
-        if (c.Cache["Admin_Info" + mobile] != null)
-        {
-            admin = (adminUser)c.Cache["Admin_Info" + mobile];
-            c.Cache.Remove("Admin_Info" + mobile);
-            c.Cache.Add("Admin_Info" + mobile, admin, null, System.DateTime.UtcNow.AddMinutes(600), TimeSpan.Zero, System.Web.Caching.CacheItemPriority.Normal, null);
-            return true;
-        }
-        return false;
     }
 
     /// <summary>
@@ -94,13 +75,18 @@ public class serviceHandler : IHttpHandler {
                 case 104:
                     Result = GetMoList(c);//获取接收短信
                     break;
+                case 105:
+                    Result = GetSmsSendList_admin(c);//发送列表[管理员]
+                    break;
+                case 106:
+                    Result = GetSmsSendCount_admin(c);//发送统计[管理员]
+                    break;
             }
         }
         catch (Exception e)
         {
             Result = e.Message.ToString();
         }
-        new Main().AddTestLog("[A]Result" + f, Result);
         return Result;
     }
 
@@ -287,6 +273,99 @@ public class serviceHandler : IHttpHandler {
     }
 
     /// <summary>
+    /// 获取发送记录列表
+    /// </summary>
+    /// <param name="c"></param>
+    /// <returns></returns>
+    public string GetSmsSendList_admin(HttpContext c)
+    {
+        string Mobile = string.IsNullOrEmpty(c.Request["Mobile"]) ? "" : c.Request["Mobile"].ToString();
+        string Content = string.IsNullOrEmpty(c.Request["Content"]) ? "" : c.Request["Content"].ToString();
+        string DateS = string.IsNullOrEmpty(c.Request["DateS"]) ? "" : c.Request["DateS"].ToString();
+        string DateE = string.IsNullOrEmpty(c.Request["DateE"]) ? "" : c.Request["DateE"].ToString();
+        int page = string.IsNullOrEmpty(c.Request["page"]) ? 1 : Convert.ToInt16(c.Request["page"]);
+        int State = string.IsNullOrEmpty(c.Request["State"]) ? -1 : Convert.ToInt16(c.Request["State"]);
+        int AdminId = string.IsNullOrEmpty(c.Request["AdminId"]) ? 0 : Convert.ToInt16(c.Request["AdminId"]);
+
+        Content = c.Server.UrlDecode(Content);
+
+        string keyword = "";
+        if (State > -1)
+        {
+            keyword += " and State = " + State;
+        }
+        if (AdminId > 0)
+        {
+            keyword += " and AdminId = " + AdminId;
+        }
+        if (Mobile.Length > 0)
+        {
+            keyword += " and streamNo in(select streamNo from tbl_sms_mx where Mobile = '" + Mobile + "') ";
+        }
+        if (Content.Length > 0)
+        {
+            keyword += " and Content like '%" + Content + "%'";
+        }
+        if (DateS.Length > 0)
+        {
+            keyword += " and Date(AddOn) >= '" + DateS + "'";
+        }
+        if (DateE.Length > 0)
+        {
+            keyword += " and Date(AddOn) <= '" + DateE + "'";
+        }
+        string sql = "select * from tbl_sms where 1=1  " + keyword + " order by addOn desc limit " + Convert.ToInt16((page - 1) * perPage) + "," + perPage;
+        string sql_c = "select count(*) as t from tbl_sms where 1=1 " + keyword + "";
+        {
+            int OCount = 1;
+            List<smsStream> lo = new _SmsStream().GetSmsList(sql, sql_c, out OCount);
+            if (lo != null && lo.Count > 0)
+            {
+                var o = new { Return = 0, Msg = OCount, List = lo };
+                return JsonMapper.ToJson(o);
+            }
+        }
+        return ToJsonResult.GetR(1, "");
+    }
+
+    /// <summary>
+    /// 获取发送统计汇总
+    /// </summary>
+    /// <param name="c"></param>
+    /// <returns></returns>
+    public string GetSmsSendCount_admin(HttpContext c)
+    {
+        string DateS = string.IsNullOrEmpty(c.Request["DateS"]) ? "" : c.Request["DateS"].ToString();
+        string DateE = string.IsNullOrEmpty(c.Request["DateE"]) ? "" : c.Request["DateE"].ToString();
+        int AdminId = string.IsNullOrEmpty(c.Request["AdminId"]) ? 0 : Convert.ToInt16(c.Request["AdminId"]);
+
+
+        string keyword = "";
+        if (AdminId > 0)
+        {
+            keyword += " and AdminId = " + AdminId;
+        }
+        if (DateS.Length > 0)
+        {
+            keyword += " and Date(AddOn) >= '" + DateS + "'";
+        }
+        if (DateE.Length > 0)
+        {
+            keyword += " and Date(AddOn) <= '" + DateE + "'";
+        }
+        string sql = "select adminID,count(*) as Count,sum(MobileNum) as MobileNum,sum(FeeNum) as FeeNum from tbl_sms where 1=1  " + keyword + " Group by AdminId order by FeeNum desc";
+        {
+            List<Rtdl.Model.Count.CountSendAll> lo = new _CountSendAll().GetSmsList(sql);
+            if (lo != null && lo.Count > 0)
+            {
+                var o = new { Return = 0, Msg = "", List = lo };
+                return JsonMapper.ToJson(o);
+            }
+        }
+        return ToJsonResult.GetR(1, "");
+    }
+
+    /// <summary>
     /// 获取接收记录列表
     /// </summary>
     /// <param name="c"></param>
@@ -343,7 +422,8 @@ public class serviceHandler : IHttpHandler {
         if (streamNo.Length > 0)
         {
             int OCount = 1;
-            List<smsMx> lo = new _SmsMx().GetSmsMxList(streamNo, -1);
+            string outs = "";
+            List<smsMx> lo = new _SmsMx().GetSmsMxList(streamNo, -1, out outs);
             if (lo != null && lo.Count > 0)
             {
                 var o = new { Return = 0, Msg = OCount, List = lo };

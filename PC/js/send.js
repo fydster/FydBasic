@@ -16,6 +16,9 @@ var _Send = {
             if (RoleID == 5 || RoleID == 1) {
                 $("#btn_addContent").removeClass("hidden");
             }
+            if (RoleID == 5) {
+                $(".icon-file-text-o").hide();
+            }
         }
 
         //捕获手机号码输入框
